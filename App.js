@@ -176,7 +176,7 @@ const newitem = {
 
 const bub = [
   require('./my/bubble1.png'),
-  require('./my/bubble2.png'),
+  require('./my/bubble2.jpg'),
   require('./my/bubble3.jpg'),
   require('./my/bubble4.jpg'),
   require('./my/extra1.png'),
@@ -195,6 +195,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNFS from 'react-native-fs'
 import KeepAwake from 'react-native-keep-awake'
+import SplashScreen from "react-native-splash-screen"
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
 const path = RNFS.DocumentDirectoryPath + '/data.txt';
@@ -721,7 +722,7 @@ class Menu extends Component{
       </View>
     )
     let itemProp = (
-      <ScrollView style={[s.submenu,{width:'64%'}]}>
+      <ScrollView style={[s.submenu,{width:'64%'},this.props.show?null:{padding:0}]}>
         <Text style={s.center}>Properties</Text>
           <SeparatorH />
           <Space height={16} />
@@ -731,6 +732,7 @@ class Menu extends Component{
           
           <View style={s.row}>
             <Text style={s.prop}>Shape</Text>
+            {!this.props.show?null:
             <Picker
               selectedValue={this.props.bag[now].shape}
               style={{height:'100%', width:'51%'}}
@@ -740,7 +742,7 @@ class Menu extends Component{
             >
               <Picker.Item label="Circle" value="circle" />
               <Picker.Item label="Square" value="square" />
-            </Picker>
+            </Picker>}
           </View>
           <Space />
           <View style={s.row}>
@@ -921,12 +923,13 @@ class Menu extends Component{
       </ScrollView>
     )
     return (
-        <View style={this.props.show?s.menu:{width:0,height:0}}>
+        <View style={[s.menu,this.props.show?{}:{height:0,borderWidth:0}]}>
+          {!this.props.show?null:
           <Touchop onPress={()=>{this.la();this.setState({menu:true})}} style={s.butmenu2}>
             <Icon name="settings" size={30} color="darkgreen" />
-          </Touchop>
+          </Touchop>}
 
-          <ScrollView style={[s.submenu,{width:'36%'}]}>
+          <ScrollView style={[s.submenu,{width:'36%'},this.props.show?null:{padding:0}]}>
             <Text style={s.center}>Items</Text>
             <SeparatorH />
             <Space height={20} />
@@ -936,7 +939,7 @@ class Menu extends Component{
           <SeparatorV />
           {itemProp}
 
-          {!this.state.menu?null: 
+          {!this.state.menu || !this.props.show?null: 
           <View style={{position:'absolute',left: 0, right: 0,top:40,justifyContent: 'center', alignItems: 'center'}}>
             <View style={s.model}>
                 <Mybut style={s.cross} onPress={()=>this.setState({menu:false})}>
@@ -954,7 +957,7 @@ class Menu extends Component{
             </View>
           </View>}
 
-          {!this.state.adding?null: 
+          {!this.state.adding || !this.props.show?null: 
           <View style={{position:'absolute',left: 0, right: 0,top:40,justifyContent: 'center', alignItems: 'center'}}>
             <View style={[s.model,{width:240}]}>
                 <Mybut style={s.cross} onPress={()=>this.setState({adding:false})}>
@@ -993,6 +996,9 @@ class App extends Component{
     KeepAwake.activate()
 
     readlog().then(v=>{this.setState({obj:v,menu:false})}) //calling promise in construtor!!!!
+  }
+  componentDidMount(){
+    SplashScreen.hide()
   }
 
   backPress(){
@@ -1093,7 +1099,7 @@ const s = StyleSheet.create({
     top:'6%',
     left:'2%',
     width:'96%',
-    height:'92%',
+    height:'93%',
     padding:0,
     margin:0,
     backgroundColor:'#beef',
