@@ -129,11 +129,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.napp"
+        applicationId "com.rohan_rawat_nn_pop_pic_maker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         vectorDrawables.useSupportLibrary = true    //nn
     }
 
